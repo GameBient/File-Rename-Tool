@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="Ui.Dark" />
+    <SolidColorBrush x:Key="Ui.ToolbarHover" />
+    <SolidColorBrush x:Key="Ui.Light" />
+    <SolidColorBrush x:Key="Ui.ContrastLight" />
+    <SolidColorBrush x:Key="Ui.UltraLight2" />
+    <SolidColorBrush x:Key="Ui.Arrow" />
+    <SolidColorBrush x:Key="Ui.ListBoxSelect" />
+</ResourceDictionary>

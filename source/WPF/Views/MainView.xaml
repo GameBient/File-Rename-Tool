@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="File_Rename_Tool.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:resource="clr-namespace:File_Rename_Tool.Resources"
+             xmlns:viewModels="clr-namespace:File_Rename_Tool.ViewModels"
+             mc:Ignorable="d"
+             FontSize="14">
+    <UserControl.DataContext>
+        <viewModels:MainViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ContextMenu x:Key="textBox_CustomContextMenu" Opened="TextBox_CustomContextMenu_Opened" />
+    </UserControl.Resources>
+    <Grid>
+        <!--Layout-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="8" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" MinWidth="100" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="16"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!--Folder Picker-->
+            <TextBlock Grid.Column="0" Text="{x:Static resource:Resource.path}" />
+            <TextBlock Name="textBlock_Path" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CurrentPath}" />
+            <Button Name="button_openFolder" Grid.Column="5" Command="{Binding RelayCommand}" CommandParameter="OpenFolder"
+                    Content="{x:Static resource:Resource.open_directory}"/>
+
+            <Separator Grid.Row="1" Grid.ColumnSpan="7" VerticalAlignment="Top" />
+
+            <!--Match Input-->
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                       Margin="0,0,4,0"
+                       Text="{x:Static resource:Resource.format}" />
+            <TextBox Name="textBox_format" Text="{Binding OriginalFormatString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Grid.Row="2" Grid.Column="1" 
+                     ContextMenu="{StaticResource textBox_CustomContextMenu}"/>
+            <Button Grid.Row="2" Grid.Column="3" Content="{x:Static resource:Resource.text_replace}"
+                    Click="ChooseFormat_Format_Button_Click" Focusable="False" />
+            <CheckBox Grid.Row="2" Grid.Column="5"
+                      VerticalContentAlignment="Center"
+                      Content="{x:Static resource:Resource.auto_update}" IsChecked="{Binding IsAutoPreviewEnabled}" />
+
+            <!--New Value-->
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                   Margin="0,0,4,0"
+                   Text="{x:Static resource:Resource.new_filename}" />
+            <TextBox Name="textBox_newName" Text="{Binding NewFormatString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Grid.Row="4" Grid.Column="1" 
+                     ContextMenu="{StaticResource textBox_CustomContextMenu}" />
+            <Button Grid.Row="4" Grid.Column="3" Content="{x:Static resource:Resource.text_replace}"
+                    Click="ChooseFormat_NewName_Button_Click" Focusable="False" />
+            <Button Name="button_Preview" Grid.Row="4" Grid.Column="5" Command="{Binding RelayCommand}" CommandParameter="ApplyReplacementRules"
+                    Content="{x:Static resource:Resource.preview}" />
+        </Grid>
+
+        <!--List-->
+        <Grid Grid.Column="1" Grid.Row="2" Margin="0,8,0,0">
+
+            <ListView Name="listView_episodes" ItemsSource="{Binding Files, Mode=OneWay}" d:ItemsSource="{d:SampleData ItemCount=4}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="PreviewKeyDown" Handler="ListViewItem_PreviewKeyDown"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Focusable" Value="False"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <GridViewColumn Header="{x:Static resource:Resource.original}" Width="200"
+                                        DisplayMemberBinding="{Binding ElementNameOriginal, Mode=OneWay}"/>
+                        <GridViewColumn Header="{x:Static resource:Resource.custom_title}" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox x:Name="textBox_newTitle" HorizontalAlignment="Stretch"
+                                             Text="{Binding TitleNew, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static resource:Resource.result}" Width="200"
+                                        DisplayMemberBinding="{Binding ElementNameReplaced, Mode=OneWay}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.Column="1" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Name="button_execute" MinWidth="80" Command="{Binding RelayCommand}" CommandParameter="RenameFiles"
+                    Content="{x:Static resource:Resource.execute}" Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</UserControl>
