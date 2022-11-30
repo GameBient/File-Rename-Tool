@@ -1,12 +1,12 @@
-﻿namespace File_Rename_Tool
+namespace File_Rename_Tool
 {
     public class StringVariable
     {
-        protected readonly string m_name;
+        readonly string m_name;
         readonly object? m_value;
 
         public string Name => m_name;
-        public virtual object? Value => m_value;
+        public object? Value => m_value;
 
         public StringVariable(string name, object? value)
         {
@@ -23,17 +23,8 @@
 
     public class StringVariable<T> : StringVariable
     {
-        readonly T m_value;
-        public override object? Value => m_value;
+        public new T? Value => (T?)base.Value;
 
-        public StringVariable(string name, T value) : base(name, value)
-        {
-            m_value = value;
-        }
-
-        public override string ToString()
-        {
-            return base.ToString();
-        }
+        public StringVariable(string name, T value) : base(name, value) { }
     }
 }

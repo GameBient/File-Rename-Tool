@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -197,7 +197,7 @@ namespace File_Rename_Tool.ViewModels
             if (OriginalFormatString.Length != 0)
             {
                 //sb.AppendLine("\nChanging fileData " + Array.FindIndex(Files, x => x == fileData) + "\n-----------------");
-                changedName = RegexMatcher.ChangeTextWithVarNew(OriginalFormatString, NewFormatString, changedName, fileData.TitleNew);
+                changedName = RegexMatcher.ChangeTextWithVar(OriginalFormatString, NewFormatString, changedName, fileData.TitleNew);
                 //sb.AppendLine("Item Name is now " + changedName);
             }
             //Log(sb.ToString());
